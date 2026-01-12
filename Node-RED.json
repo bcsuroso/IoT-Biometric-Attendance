@@ -1,0 +1,859 @@
+[
+    {
+        "id": "724a255dd1b9a1cb",
+        "type": "tab",
+        "label": "Sistem Absensi (Standby Mode)",
+        "disabled": false,
+        "info": "Flow untuk mengontrol Python Script yang berjalan di background via MQTT."
+    },
+    {
+        "id": "69277453e0166872",
+        "type": "group",
+        "z": "724a255dd1b9a1cb",
+        "name": "BAGIAN 1: PEMBANGUN KAMERA (TRIGGER)",
+        "style": {
+            "stroke": "#92d04f",
+            "fill": "#e3f3d3",
+            "label": true
+        },
+        "nodes": [
+            "4cf917c79fb75374",
+            "d948dc695a640d31",
+            "69bc531a8d42d6cf",
+            "dfa2298df19d31dc",
+            "d5a0384c7cdbfa59",
+            "f91533fb482fb4c5",
+            "f143c10c467c55c7"
+        ],
+        "x": 54,
+        "y": 119,
+        "w": 1052,
+        "h": 182
+    },
+    {
+        "id": "41ce35712d43f05c",
+        "type": "group",
+        "z": "724a255dd1b9a1cb",
+        "name": "BAGIAN 2: PENERIMA HASIL & CLOUD",
+        "style": {
+            "stroke": "#ffc000",
+            "fill": "#fff2cc",
+            "label": true
+        },
+        "nodes": [
+            "606211f9940e9209",
+            "60181501619f60da",
+            "058abd8a7a604355",
+            "8cabd2ea44a88eca",
+            "9d81850ff60951c0",
+            "e069b5d2d4cabc41",
+            "c7f9e476ca6e1dce",
+            "12ad73819dc34ed0",
+            "fa0a04c62c9a53b9"
+        ],
+        "x": 54,
+        "y": 339,
+        "w": 1012,
+        "h": 222
+    },
+    {
+        "id": "173bca1a1b69b3e7",
+        "type": "exec",
+        "z": "724a255dd1b9a1cb",
+        "command": "\"C:\\Users\\MSI\\file_anaconda\\IOT\\face_recognition\\run_absensi_2.bat\"",
+        "addpay": "payload",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Bangunkan System",
+        "x": 330,
+        "y": 40,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "f22cd340a7323ac4",
+        "type": "inject",
+        "z": "724a255dd1b9a1cb",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 20,
+        "wires": [
+            [
+                "173bca1a1b69b3e7"
+            ]
+        ]
+    },
+    {
+        "id": "4cf917c79fb75374",
+        "type": "mqtt in",
+        "z": "724a255dd1b9a1cb",
+        "g": "69277453e0166872",
+        "name": "Input Ultrasonik",
+        "topic": "sensor/ultrasonic",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "353d90bf33b4de71",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 200,
+        "y": 160,
+        "wires": [
+            [
+                "f91533fb482fb4c5"
+            ]
+        ]
+    },
+    {
+        "id": "d948dc695a640d31",
+        "type": "inject",
+        "z": "724a255dd1b9a1cb",
+        "g": "69277453e0166872",
+        "name": "Tombol Tes Manual",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "BANGUN",
+        "payloadType": "str",
+        "x": 190,
+        "y": 260,
+        "wires": [
+            [
+                "69bc531a8d42d6cf"
+            ]
+        ]
+    },
+    {
+        "id": "69bc531a8d42d6cf",
+        "type": "delay",
+        "z": "724a255dd1b9a1cb",
+        "g": "69277453e0166872",
+        "name": "Anti-Spam (20 Detik)",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 580,
+        "y": 200,
+        "wires": [
+            [
+                "dfa2298df19d31dc"
+            ]
+        ]
+    },
+    {
+        "id": "dfa2298df19d31dc",
+        "type": "change",
+        "z": "724a255dd1b9a1cb",
+        "g": "69277453e0166872",
+        "name": "Set 'BANGUN'",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "BANGUN",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 780,
+        "y": 200,
+        "wires": [
+            [
+                "d5a0384c7cdbfa59",
+                "f143c10c467c55c7"
+            ]
+        ]
+    },
+    {
+        "id": "d5a0384c7cdbfa59",
+        "type": "debug",
+        "z": "724a255dd1b9a1cb",
+        "g": "69277453e0166872",
+        "name": "Log Trigger",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "606211f9940e9209",
+        "type": "mqtt in",
+        "z": "724a255dd1b9a1cb",
+        "g": "41ce35712d43f05c",
+        "name": "Terima Hasil Python",
+        "topic": "absensi/result",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "353d90bf33b4de71",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 440,
+        "wires": [
+            [
+                "60181501619f60da"
+            ]
+        ]
+    },
+    {
+        "id": "60181501619f60da",
+        "type": "function",
+        "z": "724a255dd1b9a1cb",
+        "g": "41ce35712d43f05c",
+        "name": "Parsing Hasil",
+        "func": "// Pesan dari Python bentuknya: \"OPEN:NamaUser\" atau \"TIMEOUT\"\nvar pesan = msg.payload.toString();\n\nif (pesan.includes(\"OPEN:\")) {\n    var namaUser = pesan.split(\":\")[1];\n    msg.payload = {\n        status: \"BERHASIL\",\n        nama: namaUser\n    };\n    return msg;\n} else {\n    return null; // Abaikan jika Timeout\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 440,
+        "wires": [
+            [
+                "058abd8a7a604355"
+            ]
+        ]
+    },
+    {
+        "id": "058abd8a7a604355",
+        "type": "switch",
+        "z": "724a255dd1b9a1cb",
+        "g": "41ce35712d43f05c",
+        "name": "Validasi Sukses",
+        "property": "payload.status",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "BERHASIL",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 560,
+        "y": 440,
+        "wires": [
+            [
+                "8cabd2ea44a88eca",
+                "e069b5d2d4cabc41",
+                "c7f9e476ca6e1dce"
+            ]
+        ]
+    },
+    {
+        "id": "8cabd2ea44a88eca",
+        "type": "change",
+        "z": "724a255dd1b9a1cb",
+        "g": "41ce35712d43f05c",
+        "name": "Set 'BUKA'",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "BUKA",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 750,
+        "y": 400,
+        "wires": [
+            [
+                "9d81850ff60951c0"
+            ]
+        ]
+    },
+    {
+        "id": "9d81850ff60951c0",
+        "type": "mqtt out",
+        "z": "724a255dd1b9a1cb",
+        "g": "41ce35712d43f05c",
+        "name": "Ke Servo Gerbang",
+        "topic": "gate/servo",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "353d90bf33b4de71",
+        "x": 950,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "e069b5d2d4cabc41",
+        "type": "change",
+        "z": "724a255dd1b9a1cb",
+        "g": "41ce35712d43f05c",
+        "name": "Format Data Cloud",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t    \"nama\": payload.nama,\t    \"timestamp\": $now(),\t    \"lokasi\": \"Gerbang Utama\"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 770,
+        "y": 520,
+        "wires": [
+            [
+                "12ad73819dc34ed0"
+            ]
+        ]
+    },
+    {
+        "id": "c7f9e476ca6e1dce",
+        "type": "debug",
+        "z": "724a255dd1b9a1cb",
+        "g": "41ce35712d43f05c",
+        "name": "Log Berhasil",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "12ad73819dc34ed0",
+        "type": "firebase-out",
+        "z": "724a255dd1b9a1cb",
+        "g": "41ce35712d43f05c",
+        "name": "Absensi",
+        "database": "e8796a1869e179bc",
+        "path": "data_absensi",
+        "pathType": "str",
+        "priority": "1",
+        "queryType": "push",
+        "x": 960,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "ac5d92f6bfc54e0b",
+        "type": "inject",
+        "z": "724a255dd1b9a1cb",
+        "name": "Update Data",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 720,
+        "wires": [
+            [
+                "60dddfb26ddb48d0"
+            ]
+        ]
+    },
+    {
+        "id": "a1f30432fc71d99e",
+        "type": "function",
+        "z": "724a255dd1b9a1cb",
+        "name": "Hitung Hari Ini",
+        "func": "// Ambil data dari Firebase\nvar rawData = msg.payload;\nif (!rawData) return null;\n\n// Ubah Object ke Array\nvar dataArray = Object.values(rawData);\n\n// Dapatkan tanggal hari ini (Format YYYY-MM-DD)\n// Menggunakan slice(0, 10) dari ISO string\nvar today = new Date().toISOString().slice(0, 10);\n\n// Gunakan Set untuk menyimpan nama unik (agar tidak dihitung ganda)\nvar uniqueUsersToday = new Set();\n\ndataArray.forEach(function (item) {\n    // Pastikan data punya timestamp dan tanggalnya cocok dengan hari ini\n    if (item.timestamp && item.timestamp.includes(today)) {\n        uniqueUsersToday.add(item.nama);\n    }\n});\n\n// Kirim jumlah ukuran Set (jumlah orang unik)\nmsg.payload = uniqueUsersToday.size;\nmsg.topic = \"Total Hadir Hari Ini\";\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 660,
+        "wires": [
+            [
+                "17ab814565aea1ee"
+            ]
+        ]
+    },
+    {
+        "id": "17ab814565aea1ee",
+        "type": "ui_gauge",
+        "z": "724a255dd1b9a1cb",
+        "name": "",
+        "group": "group_dashboard",
+        "order": 1,
+        "width": "6",
+        "height": "4",
+        "gtype": "gage",
+        "title": "Total Hadir (Hari Ini)",
+        "label": "Orang",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "10",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 860,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "44e43fb46fef690d",
+        "type": "function",
+        "z": "724a255dd1b9a1cb",
+        "name": "Hitung Frekuensi",
+        "func": "// Ambil data dari Firebase\nvar rawData = msg.payload;\nif (!rawData) return null;\n\nvar dataArray = Object.values(rawData);\nvar userCounts = {};\n\n// Hitung berapa kali setiap nama muncul\ndataArray.forEach(function(item) {\n    var name = item.nama;\n    if (name) {\n        // Ganti underscore (_) dengan spasi agar rapi di grafik\n        var displayName = name.replace(/_/g, ' ');\n        userCounts[displayName] = (userCounts[displayName] || 0) + 1;\n    }\n});\n\n// Siapkan array untuk format Chart Node-RED\nvar labels = [];\nvar data = [];\n\nfor (var key in userCounts) {\n    labels.push(key);       // Nama User (Sumbu X)\n    data.push(userCounts[key]); // Jumlah Hadir (Sumbu Y)\n}\n\n// Format payload wajib untuk Dashboard Chart\nmsg.payload = [{\n    \"series\": [\"Jumlah Kehadiran\"],\n    \"data\": [data],\n    \"labels\": labels\n}];\n\nmsg.topic = \"Statistik Keaktifan\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 720,
+        "wires": [
+            [
+                "250f9b9031a5d4bd"
+            ]
+        ]
+    },
+    {
+        "id": "250f9b9031a5d4bd",
+        "type": "ui_chart",
+        "z": "724a255dd1b9a1cb",
+        "name": "",
+        "group": "group_dashboard",
+        "order": 2,
+        "width": "6",
+        "height": "4",
+        "label": "Keaktifan User",
+        "chartType": "pie",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 880,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0133eb19cc7baebc",
+        "type": "function",
+        "z": "724a255dd1b9a1cb",
+        "name": "Format Mingguan",
+        "func": "var rawData = msg.payload;\n\n// Siapkan keranjang 7 Hari\nvar labels = [];\nvar values = [];\nvar mapHari = {};\n\n// 1. GENERATE TANGGAL (Wajib dilakukan meski data kosong)\nfor (var i = 6; i >= 0; i--) {\n    var d = new Date();\n    d.setDate(d.getDate() - i);\n    var keyDate = d.toISOString().split('T')[0];\n\n    // Label Sumbu X (Sen, Sel, Rab...)\n    var labelCantik = d.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric' });\n\n    labels.push(labelCantik);\n    mapHari[keyDate] = new Set(); // Siapkan Set kosong\n}\n\n// 2. MASUKKAN DATA (Hanya jika rawData ada isinya)\nif (rawData) {\n    for (var key in rawData) {\n        var item = rawData[key];\n        // Pastikan item tidak null dan punya timestamp\n        if (item && item.timestamp && item.nama) {\n            try {\n                var tglData = new Date(item.timestamp).toISOString().split('T')[0];\n                if (mapHari[tglData]) {\n                    mapHari[tglData].add(item.nama);\n                }\n            } catch (e) {\n                // Abaikan data error\n            }\n        }\n    }\n}\n\n// 3. FINALISASI DATA (Ubah Set jadi Angka)\nfor (var i = 6; i >= 0; i--) {\n    var d = new Date();\n    d.setDate(d.getDate() - i);\n    var keyDate = d.toISOString().split('T')[0];\n\n    // Jika tidak ada data, otomatis jadi 0 (aman dari error null)\n    var jumlah = mapHari[keyDate] ? mapHari[keyDate].size : 0;\n    values.push(jumlah);\n}\n\n// 4. KIRIM KE CHART\nmsg.payload = [{\n    \"series\": [\"Pengunjung\"],\n    \"data\": [values], // Pastikan ini array dalam array\n    \"labels\": labels\n}];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 780,
+        "wires": [
+            [
+                "7f5ead49884b98b3"
+            ]
+        ]
+    },
+    {
+        "id": "7f5ead49884b98b3",
+        "type": "ui_chart",
+        "z": "724a255dd1b9a1cb",
+        "name": "",
+        "group": "group_dashboard",
+        "order": 3,
+        "width": "12",
+        "height": "5",
+        "label": "Tren 7 Hari Terakhir",
+        "chartType": "bar",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 870,
+        "y": 780,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ba2a97fb0057b4ba",
+        "type": "function",
+        "z": "724a255dd1b9a1cb",
+        "name": "Format Tabel (Top 5)",
+        "func": "var rawData = msg.payload;\nvar listLog = [];\n\nfor (var key in rawData) {\n    var item = rawData[key];\n    listLog.push(item);\n}\n\n// Urutkan (Terbaru di atas)\nlistLog.sort(function(a, b) {\n    return new Date(b.timestamp) - new Date(a.timestamp);\n});\n\n// Ambil 5 Teratas\nvar top5 = listLog.slice(0, 5);\n\n// Format ke Array Object\nmsg.payload = top5.map(item => {\n    var d = new Date(item.timestamp);\n    return {\n        \"Nama\": item.nama,\n        \"Waktu\": d.toLocaleTimeString('id-ID'),\n        \"Lokasi\": item.lokasi\n    };\n});\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 840,
+        "wires": [
+            [
+                "12d5db56561201ca"
+            ]
+        ]
+    },
+    {
+        "id": "12d5db56561201ca",
+        "type": "ui_table",
+        "z": "724a255dd1b9a1cb",
+        "group": "group_dashboard",
+        "name": "Log Terakhir",
+        "order": 4,
+        "width": "12",
+        "height": "5",
+        "columns": [
+            {
+                "field": "Nama",
+                "title": "Nama",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Waktu",
+                "title": "Jam Masuk",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Lokasi",
+                "title": "Lokasi",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 890,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "f91533fb482fb4c5",
+        "type": "function",
+        "z": "724a255dd1b9a1cb",
+        "g": "69277453e0166872",
+        "name": "function 3",
+        "func": "let range = parseInt(msg.payload);\nlet threshold = 15;\n\n// tentukan jarak sekarang\nlet currentState = (range < threshold) ? \"ON\" : \"OFF\";\n\n// ambil status sebelumnya (jika belum ada, pakai NONE)\nlet previousState = flow.get(\"prevUltrasonicState\") || \"NONE\";\n\n// simpan status baru\nflow.set(\"prevUltrasonicState\", currentState);\n\n// set perintah untuk kamera\nmsg.camCommand = currentState;\n\n// hanya trigger kalau berubah ke ON\nif (currentState === \"ON\" && previousState !== \"ON\") {\n    msg.payload = \"TRIGGER\";\n    return msg;\n}\n\n// selain itu hentikan flow\nreturn null;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 180,
+        "wires": [
+            [
+                "69bc531a8d42d6cf"
+            ]
+        ]
+    },
+    {
+        "id": "fa0a04c62c9a53b9",
+        "type": "inject",
+        "z": "724a255dd1b9a1cb",
+        "g": "41ce35712d43f05c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 540,
+        "y": 380,
+        "wires": [
+            [
+                "8cabd2ea44a88eca"
+            ]
+        ]
+    },
+    {
+        "id": "f143c10c467c55c7",
+        "type": "mqtt out",
+        "z": "724a255dd1b9a1cb",
+        "g": "69277453e0166872",
+        "name": "ke Python (Trigger)",
+        "topic": "absensi/trigger",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "353d90bf33b4de71",
+        "x": 990,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "c466baa70fecd7ae",
+        "type": "function",
+        "z": "724a255dd1b9a1cb",
+        "name": "function 4",
+        "func": "// 1. Ambil data mentah dari Firebase\nvar rawData = msg.payload;\n\n// Jika data kosong, stop\nif (!rawData) return [null, null];\n\n// Ubah Object Firebase menjadi Array\nvar dataArray = Object.values(rawData);\n\n// --- LOGIKA 1: TOTAL HADIR HARI INI ---\n\n// Dapatkan tanggal hari ini (Format YYYY-MM-DD)\n// Kita gunakan ISO string slice agar cocok dengan format timestamp di database\nvar today = new Date().toISOString().split('T')[0]; \n\nvar uniqueUsersToday = new Set(); // Pakai Set biar nama gak dobel\n\ndataArray.forEach(function(item) {\n    // Cek apakah data memiliki timestamp dan tanggalnya cocok dengan hari ini\n    if (item.timestamp && item.timestamp.includes(today)) {\n        uniqueUsersToday.add(item.nama);\n    }\n});\n\nvar totalHadir = uniqueUsersToday.size;\n\n\n// --- LOGIKA 2: KEAKTIFAN USER (Barchart) ---\n\nvar userCounts = {};\n\n// Hitung frekuensi nama muncul (Total sepanjang masa)\ndataArray.forEach(function(item) {\n    var name = item.nama;\n    if (name) {\n        // Bersihkan underscore biar rapi di chart\n        var displayName = name.replace(/_/g, ' '); \n        userCounts[displayName] = (userCounts[displayName] || 0) + 1;\n    }\n});\n\n// Format data agar diterima oleh Node-RED Chart\nvar labels = [];\nvar data = [];\n\nfor (var key in userCounts) {\n    labels.push(key);       // Nama User\n    data.push(userCounts[key]); // Jumlah Hadir\n}\n\n// Format output untuk Bar Chart Node-RED\nvar chartPayload = [{\n    \"series\": [\"Kehadiran\"],\n    \"data\": [data],\n    \"labels\": labels\n}];\n\n\n// --- OUTPUT ---\n// Output 1: Untuk Gauge (Total Hadir)\n// Output 2: Untuk Chart (Keaktifan)\nreturn [\n    { payload: totalHadir, topic: \"Total Hadir\" }, \n    { payload: chartPayload, topic: \"Keaktifan User\" }\n];",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 900,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "60dddfb26ddb48d0",
+        "type": "firebase-get",
+        "z": "724a255dd1b9a1cb",
+        "name": "Ambil Data Absensi",
+        "constraints": {},
+        "database": "e8796a1869e179bc",
+        "outputType": "auto",
+        "passThrough": false,
+        "path": "data_absensi",
+        "pathType": "str",
+        "useConstraints": false,
+        "x": 370,
+        "y": 660,
+        "wires": [
+            [
+                "a1f30432fc71d99e",
+                "44e43fb46fef690d",
+                "0133eb19cc7baebc",
+                "ba2a97fb0057b4ba"
+            ]
+        ]
+    },
+    {
+        "id": "353d90bf33b4de71",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "10.252.255.202",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "e8796a1869e179bc",
+        "type": "firebase-config",
+        "name": "My Database",
+        "authType": "anonymous",
+        "claims": {},
+        "createUser": false,
+        "status": {
+            "firestore": false,
+            "storage": false
+        },
+        "useClaims": false
+    },
+    {
+        "id": "group_dashboard",
+        "type": "ui_group",
+        "name": "Statistik Absensi",
+        "tab": "tab_absensi",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "tab_absensi",
+        "type": "ui_tab",
+        "name": "Dashboard Absensi",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "25fb21da05b7e86a",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@gogovega/node-red-contrib-firebase-realtime-database": "0.8.2",
+            "node-red-dashboard": "3.6.6",
+            "node-red-node-ui-table": "0.4.5",
+            "@gogovega/firebase-config-node": "0.3.2"
+        }
+    }
+]
